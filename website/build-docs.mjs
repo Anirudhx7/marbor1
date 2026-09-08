@@ -84,7 +84,7 @@ function renderMarkdown(md) {
       while (i < lines.length && !/^```/.test(lines[i])) { buf.push(lines[i]); i++; }
       i++; // closing fence
       const raw = buf.join("\n");
-      html += `<div class="code-wrap"><pre class="code"${lang ? ` data-lang="${lang}"` : ""}><code>${escapeHtml(raw)}</code></pre><button class="copy-btn" aria-label="Copy code" data-copy="${escapeAttr(raw)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg><span>copy</span></button></div>\n`;
+      html += `<div class="code-wrap"><pre class="code"${lang ? ` data-lang="${lang}"` : ""}><code>${escapeHtml(raw)}</code></pre><button class="copy-btn" aria-label="Copy code" data-copy="${escapeAttr(raw)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="1.5"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg><span>Copy</span></button></div>\n`;
       continue;
     }
 
@@ -151,7 +151,7 @@ function renderMarkdown(md) {
 }
 
 /* ---------- shared chrome (matches index.html) ---------- */
-const LOGO_HTML = `<div style="width:32px;height:32px;background:#1a1714;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="22" height="22" viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M30 35 L30 65 M30 50 L50 35 L50 65 M50 50 L70 35 L70 65" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="75" cy="75" r="8" fill="#a87f3a"/></svg></div>`;
+const LOGO_HTML = `<svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 8v16M7 16l8-8v16M15 16l8-8v16" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="miter"/></svg>`;
 const GH_SVG = `<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>`;
 
 // All docs in nav order, grouped.
@@ -210,8 +210,6 @@ function breadcrumb(slug, title) {
   return crumbs.join('<span class="sep">/</span>');
 }
 
-const DOC_CSS = readFileSync(join(__dirname, "docs.css"), "utf8");
-
 function page({ slug, title, contentHtml, headings }) {
   const r = relRoot(slug);
   return `<!doctype html>
@@ -225,36 +223,39 @@ function page({ slug, title, contentHtml, headings }) {
 <title>${escapeHtml(title)} · Marbor docs</title>
 <meta name="description" content="Marbor documentation: ${escapeHtml(title)}." />
 <link rel="icon" type="image/svg+xml" href="${r}favicon.svg" />
+<link rel="stylesheet" href="${r}site.css" />
+<link rel="stylesheet" href="${r}docs.css" />
+<meta name="theme-color" content="#0e0f0e" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f3f1ea" media="(prefers-color-scheme: light)" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Marbor" />
 <meta property="og:title" content="${escapeHtml(title)} · Marbor docs" />
 <meta property="og:description" content="Marbor documentation: ${escapeHtml(title)}." />
 <meta property="og:image" content="https://anirudh.social/marbor/screenshots/dashboard.png" />
-<meta property="og:image:alt" content="marbor admin dashboard" />
+<meta property="og:image:alt" content="Marbor admin dashboard" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="${escapeHtml(title)} · Marbor docs" />
 <meta name="twitter:image" content="https://anirudh.social/marbor/screenshots/dashboard.png" />
-<style>${DOC_CSS}</style>
 </head>
 <body>
-<nav>
+<nav class="top">
   <div class="page">
-    <a href="${r}index.html" class="brand" aria-label="Marbor home">${LOGO_HTML}<span class="name">Marbor</span><span class="ver">{{VERSION}}</span><span class="brand-dot" title="Active"></span></a>
+    <a href="${r}index.html" class="brand" aria-label="Marbor home">${LOGO_HTML}<span class="name">Marbor</span><span class="ver">{{VERSION}}</span></a>
     <div class="nav-right">
       <div class="nav-links">
-        <a class="link" href="${r}index.html#features">Features</a>
-        <a class="link" href="${r}index.html#how">How it works</a>
+        <a class="link" href="${r}index.html#features">Product</a>
+        <a class="link" href="${r}index.html#how">Install</a>
         <a class="link" href="${r}index.html#compare">Compare</a>
         <a class="link active" href="${r}docs/index.html">Docs</a>
-        <a class="link" href="https://github.com/Anirudhx7/marbor" target="_blank" rel="noopener noreferrer">GitHub&nbsp;↗</a>
-        <a class="link" href="https://anirudh.social/marbor/demo/" target="_blank" rel="noopener noreferrer" style="color:var(--accent2);font-weight:500;">Demo&nbsp;↗</a>
+        <a class="link" href="https://github.com/Anirudhx7/marbor" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="link" href="https://anirudh.social/marbor/demo/" target="_blank" rel="noopener noreferrer">Demo</a>
       </div>
       <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle dark and light mode">
-        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
       </button>
       <button class="icon-btn hamburger" id="sidebarToggle" aria-label="Open docs menu" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
   </div>
@@ -263,7 +264,7 @@ function page({ slug, title, contentHtml, headings }) {
 <div class="doc-shell">
   <aside class="doc-sidebar" id="docSidebar" aria-label="Documentation navigation">
     <a class="doc-nav-link home" href="${r}docs/index.html">← Docs home</a>
-    <a class="doc-nav-link" href="https://anirudh.social/marbor/demo/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;color:var(--accent2);margin-bottom:18px;"><span class="brand-dot" style="flex-shrink:0"></span>Live demo ↗</a>
+    <a class="doc-nav-link" href="https://anirudh.social/marbor/demo/" target="_blank" rel="noopener" style="margin-bottom:18px;">Live demo →</a>
     ${docSidebar(slug)}
   </aside>
 
@@ -286,7 +287,7 @@ function page({ slug, title, contentHtml, headings }) {
 <footer class="foot">
   <div class="foot-bottom">
     <span>© <span id="year">2026</span> Marbor contributors · Apache-2.0</span>
-    <span>Marbor <span style="color:var(--accent)">{{VERSION}}</span></span>
+    <span>Marbor {{VERSION}}</span>
   </div>
 </footer>
 
@@ -297,7 +298,7 @@ var t=document.getElementById("themeToggle");if(t)t.addEventListener("click",fun
 var sb=document.getElementById("sidebarToggle"),side=document.getElementById("docSidebar");
 if(sb&&side)sb.addEventListener("click",function(){var o=side.classList.toggle("open");sb.setAttribute("aria-expanded",String(o));});
 var y=document.getElementById("year");if(y)y.textContent=new Date().getFullYear();
-document.querySelectorAll(".copy-btn").forEach(function(btn){btn.addEventListener("click",function(){var text=btn.dataset.copy||"";var label=btn.querySelector("span");var done=function(){btn.classList.add("copied");if(label)label.textContent="copied!";setTimeout(function(){btn.classList.remove("copied");if(label)label.textContent="copy";},1600);};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done).catch(done);else{var ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}document.body.removeChild(ta);done();}});});
+document.querySelectorAll(".copy-btn").forEach(function(btn){btn.addEventListener("click",function(){var text=btn.dataset.copy||"";var label=btn.querySelector("span");var done=function(){btn.classList.add("copied");if(label)label.textContent="Copied";setTimeout(function(){btn.classList.remove("copied");if(label)label.textContent="Copy";},1600);};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done).catch(done);else{var ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}document.body.removeChild(ta);done();}});});
 // active TOC on scroll
 var links=[].slice.call(document.querySelectorAll(".toc a"));
 var ids=links.map(function(a){return a.getAttribute("href").slice(1);});
@@ -331,44 +332,47 @@ function docsIndexPage() {
 <title>Documentation · Marbor</title>
 <meta name="description" content="Marbor documentation -- integrations, production deployment, savings math, and use cases." />
 <link rel="icon" type="image/svg+xml" href="${r}favicon.svg" />
-<style>${DOC_CSS}</style>
+<link rel="stylesheet" href="${r}site.css" />
+<link rel="stylesheet" href="${r}docs.css" />
+<meta name="theme-color" content="#0e0f0e" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f3f1ea" media="(prefers-color-scheme: light)" />
 </head>
 <body>
-<nav>
+<nav class="top">
   <div class="page">
-    <a href="${r}index.html" class="brand" aria-label="Marbor home">${LOGO_HTML}<span class="name">Marbor</span><span class="ver">{{VERSION}}</span><span class="brand-dot" title="Active"></span></a>
+    <a href="${r}index.html" class="brand" aria-label="Marbor home">${LOGO_HTML}<span class="name">Marbor</span><span class="ver">{{VERSION}}</span></a>
     <div class="nav-right">
       <div class="nav-links">
-        <a class="link" href="${r}index.html#features">Features</a>
-        <a class="link" href="${r}index.html#how">How it works</a>
+        <a class="link" href="${r}index.html#features">Product</a>
+        <a class="link" href="${r}index.html#how">Install</a>
         <a class="link" href="${r}index.html#compare">Compare</a>
         <a class="link active" href="index.html">Docs</a>
-        <a class="link" href="https://github.com/Anirudhx7/marbor" target="_blank" rel="noopener noreferrer">GitHub&nbsp;↗</a>
-        <a class="link" href="https://anirudh.social/marbor/demo/" target="_blank" rel="noopener noreferrer" style="color:var(--accent2);font-weight:500;">Demo&nbsp;↗</a>
+        <a class="link" href="https://github.com/Anirudhx7/marbor" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="link" href="https://anirudh.social/marbor/demo/" target="_blank" rel="noopener noreferrer">Demo</a>
       </div>
       <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle dark and light mode">
-        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
       </button>
       <button class="icon-btn hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
   </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <a href="${r}index.html#features">Features</a>
-  <a href="${r}index.html#how">How it works</a>
+  <a href="${r}index.html#features">Product</a>
+  <a href="${r}index.html#how">Install</a>
   <a href="${r}index.html#compare">Compare</a>
   <a href="index.html">Docs</a>
   <a href="https://anirudh.social/marbor/demo/" target="_blank" rel="noopener noreferrer">Live demo</a>
-  <a href="https://github.com/Anirudhx7/marbor" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+  <a href="https://github.com/Anirudhx7/marbor" target="_blank" rel="noopener noreferrer">GitHub</a>
 </div>
 
 <main class="doc-index">
   <p class="eyebrow">Documentation</p>
   <h1>Run it, route it, read the numbers.</h1>
-  <p class="lead">Everything you need to put Marbor in front of your cluster -- connect your tools, ship to production, and understand exactly what it's saving you.</p>
+  <p class="lead">Everything you need to put Marbor in front of your cluster — connect your tools, ship to production, and understand exactly what it is saving you.</p>
   ${DOC_GROUPS.map((g) => `
     <section class="index-section">
       <h2>${g.title} · ${g.items.length} pages</h2>
@@ -385,7 +389,7 @@ function docsIndexPage() {
 <footer class="foot">
   <div class="foot-bottom">
     <span>© <span id="year">2026</span> Marbor contributors · Apache-2.0</span>
-    <span>Marbor <span style="color:var(--accent)">{{VERSION}}</span></span>
+    <span>Marbor {{VERSION}}</span>
   </div>
 </footer>
 <script>
