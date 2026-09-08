@@ -25,7 +25,7 @@
   border-left: 0;
 }
 .doc-nav-link:hover { color: var(--ink); text-decoration: none; }
-.doc-nav-link.active { color: var(--ink); font-weight: 500; }
+.doc-nav-link.active { color: var(--signal); font-weight: 500; }
 .doc-nav-link.home { color: var(--ink); font-weight: 500; margin-bottom: 18px; }
 .nav-group { margin-bottom: 22px; }
 .nav-group-title {
@@ -54,15 +54,17 @@
 
 .doc-content { font-size: 15.5px; }
 .doc-content h1 {
-  font-weight: 500;
-  font-size: clamp(28px, 4.2vw, 40px);
-  letter-spacing: -0.03em;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(30px, 4.4vw, 44px);
+  letter-spacing: -0.028em;
   margin: 0 0 12px;
   line-height: 1.12;
 }
 .doc-content h2 {
-  font-weight: 500;
-  font-size: 22px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 24px;
   letter-spacing: -0.02em;
   margin: 40px 0 12px;
   padding-top: 16px;
@@ -220,7 +222,7 @@
 }
 .toc li.lvl-3 a { padding-left: 24px; font-size: 12.5px; }
 .toc li a:hover { color: var(--ink); }
-.toc li a.active { color: var(--ink); border-left-color: var(--ink); }
+.toc li a.active { color: var(--signal); border-left-color: var(--signal); }
 .toc-empty { color: var(--faint); font-size: 13px; }
 
 .doc-index { max-width: var(--page); margin: 0 auto; padding: 56px var(--gutter) 90px; }
@@ -229,13 +231,14 @@
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--signal);
   margin: 0 0 16px;
 }
 .doc-index h1 {
-  font-weight: 500;
-  font-size: clamp(32px, 5vw, 48px);
-  letter-spacing: -0.035em;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(34px, 5.2vw, 52px);
+  letter-spacing: -0.03em;
   margin: 0 0 14px;
   line-height: 1.08;
 }

@@ -225,8 +225,8 @@ function page({ slug, title, contentHtml, headings }) {
 <link rel="icon" type="image/svg+xml" href="${r}favicon.svg" />
 <link rel="stylesheet" href="${r}site.css" />
 <link rel="stylesheet" href="${r}docs.css" />
-<meta name="theme-color" content="#0e0f0e" media="(prefers-color-scheme: dark)" />
-<meta name="theme-color" content="#f3f1ea" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#080a0e" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f4efe4" media="(prefers-color-scheme: light)" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Marbor" />
 <meta property="og:title" content="${escapeHtml(title)} · Marbor docs" />
@@ -334,8 +334,8 @@ function docsIndexPage() {
 <link rel="icon" type="image/svg+xml" href="${r}favicon.svg" />
 <link rel="stylesheet" href="${r}site.css" />
 <link rel="stylesheet" href="${r}docs.css" />
-<meta name="theme-color" content="#0e0f0e" media="(prefers-color-scheme: dark)" />
-<meta name="theme-color" content="#f3f1ea" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#080a0e" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f4efe4" media="(prefers-color-scheme: light)" />
 </head>
 <body>
 <nav class="top">
